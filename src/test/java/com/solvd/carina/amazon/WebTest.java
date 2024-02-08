@@ -31,12 +31,13 @@ public class WebTest implements IAbstractTest {
         HeaderComponent headerComponent = page.getHeaderComponent();
         headerComponent.typeSearch(productName);
         ResultsPage resultsPage = headerComponent.clickOnSubmitBtn();
-        boolean result = resultsPage.searchedTextEqualsToResultText(productName);
+        String searched = resultsPage.getSearchedText();
 
-        Assert.assertTrue(result);
+        Assert.assertEquals(searched, productName, "Searched product input and product output do not match");
     }
 
-    @DataProvider
+    @DataProvider(name = "languagesProvider")
+    @MethodOwner(owner = "mchutt")
     public Object[][] languagesProvider(){
         return new Object[][]{
                 {"de_DE", "DE"},
@@ -56,7 +57,7 @@ public class WebTest implements IAbstractTest {
         changeLanguagePage.clickOnValue(languageLocale);
         changeLanguagePage.clickOnSaveChangesBtn();
 
-        Assert.assertEquals(headerComponent.getLanguage(), languageCode);
+        Assert.assertEquals(headerComponent.getLanguage(), languageCode, "Language codes do not match");
     }
 
     @Test
@@ -67,6 +68,6 @@ public class WebTest implements IAbstractTest {
         page.open();
 
         String title = page.getTitle();
-        Assert.assertEquals(title,"Amazon.com");
+        Assert.assertEquals(title,"Amazon.com", "Title value and expected title value do not match");
     }
 }

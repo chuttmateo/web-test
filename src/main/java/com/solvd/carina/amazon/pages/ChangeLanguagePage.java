@@ -19,13 +19,13 @@ public class ChangeLanguagePage extends AbstractPage {
         super(driver);
     }
     public void clickAll(){
-        languageItems.forEach(LanguageItem::click);
+        languageItems.forEach(LanguageItem::clickOnItemButton);
     }
     public void clickOnValue(String value){
         Optional<LanguageItem> divToClick = languageItems.stream()
                 .filter(div -> div.getValue().equals(value))
                 .findAny();
-        divToClick.ifPresent(LanguageItem::click);
+        divToClick.ifPresent(LanguageItem::clickOnItemButton);
     }
     public void clickOnSaveChangesBtn(){
         saveChangesBtn.click();

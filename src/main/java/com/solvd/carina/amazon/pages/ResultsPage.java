@@ -12,10 +12,8 @@ public class ResultsPage extends AbstractPage {
     public ResultsPage(WebDriver driver) {
         super(driver);
     }
-    public boolean searchedTextEqualsToResultText(String searched){
-        if (searched == null)
-            return false;
-        return searched.equals(cleanText(resultsText.getText()));
+    public String getSearchedText(){
+        return cleanText(resultsText.getText());
     }
 
     /**

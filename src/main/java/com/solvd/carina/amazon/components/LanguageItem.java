@@ -10,7 +10,7 @@ public class LanguageItem extends AbstractUIObject {
     @FindBy(xpath = ".//input[@type='radio']")
     private ExtendedWebElement input;
     @FindBy(xpath = ".//i")
-    private ExtendedWebElement i;
+    private ExtendedWebElement itemButton;
 
     public LanguageItem(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
@@ -18,7 +18,7 @@ public class LanguageItem extends AbstractUIObject {
     public String getValue(){
         return input.getAttribute("value");
     }
-    public void click(){
-        i.click();
+    public void clickOnItemButton(){
+        itemButton.click();
     }
 }
