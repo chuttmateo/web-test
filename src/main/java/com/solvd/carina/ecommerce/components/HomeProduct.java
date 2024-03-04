@@ -6,6 +6,8 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.Objects;
+
 public class HomeProduct extends AbstractUIObject {
 
 
@@ -22,5 +24,18 @@ public class HomeProduct extends AbstractUIObject {
     }
     public void clickOnAddToCart(){
         addToCartButton.click();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HomeProduct that = (HomeProduct) o;
+        return Objects.equals(productName.getText(), that.productName.getText());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productName.getText());
     }
 }

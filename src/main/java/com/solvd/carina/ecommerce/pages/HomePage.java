@@ -2,6 +2,7 @@ package com.solvd.carina.ecommerce.pages;
 
 import com.solvd.carina.ecommerce.components.Cart;
 import com.solvd.carina.ecommerce.components.HomeProduct;
+import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -14,6 +15,9 @@ import java.util.Random;
 public class HomePage extends AbstractPage {
     @FindBy(xpath = "//button[text() = 'Add to cart']/ancestor::div[@tabindex = '1']")
     private List<HomeProduct> products;
+
+    @FindBy(xpath = "//div[@title = 'Products in cart quantity']/../..")
+    private ExtendedWebElement openCartButton;
     @FindBy(xpath = "//button[text() = 'Checkout']/ancestor::div[.//span[text()='X']][1]")
     private Cart cart;
     public HomePage(WebDriver driver) {
@@ -28,6 +32,10 @@ public class HomePage extends AbstractPage {
         return products.get(new Random().nextInt(products.size()));
     }
     public Cart getCart() {
+        return cart;
+    }
+    public Cart clickOnOpenCartButton(){
+        openCartButton.click();
         return cart;
     }
 }
