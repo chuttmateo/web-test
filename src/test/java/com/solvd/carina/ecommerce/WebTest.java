@@ -9,8 +9,6 @@ import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,8 +38,8 @@ public class WebTest implements IAbstractTest {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
 
-        Set<HomeProduct> products = getProducts(homePage, 2);
-        //add to cart products and collect names in a set
+        Set<HomeProduct> products = homePage.getRandomProducts(2);
+        //add products to cart and collect names in a set
         Set<String> homeProductNames = products.stream()
                 .peek(homeProduct -> {
                     homeProduct.clickOnAddToCart();
@@ -60,11 +58,5 @@ public class WebTest implements IAbstractTest {
         //verify if all products are present in cart Component
         Assert.assertEquals(cartProductName, homeProductNames, "Products in cart do not match products added to cart");
 
-    }
-    private Set<HomeProduct> getProducts(HomePage homePage, int n){
-        Set<HomeProduct> result = new HashSet<>();
-        while (result.size() < n)
-            result.add(homePage.getRandomProduct());
-        return result;
     }
 }

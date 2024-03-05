@@ -9,13 +9,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.FluentWait;
 
 import java.time.Duration;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class HomePage extends AbstractPage {
     @FindBy(xpath = "//button[text() = 'Add to cart']/ancestor::div[@tabindex = '1']")
     private List<HomeProduct> products;
-
     @FindBy(xpath = "//div[@title = 'Products in cart quantity']/../..")
     private ExtendedWebElement openCartButton;
     @FindBy(xpath = "//button[text() = 'Checkout']/ancestor::div[.//span[text()='X']][1]")
@@ -24,12 +23,13 @@ public class HomePage extends AbstractPage {
         super(driver);
     }
     public HomeProduct getRandomProduct(){
-        FluentWait<List<HomeProduct>> waiter = new FluentWait<>(products)
-                .withTimeout(Duration.ofSeconds(5))
-                .pollingEvery(Duration.ofMillis(300));
-
-        waiter.until(products -> !products.isEmpty());
+        waitProductList();
         return products.get(new Random().nextInt(products.size()));
+    }
+    public Set<HomeProduct> getRandomProducts(int i){
+        waitProductList();
+        Collections.shuffle(products);
+        return new HashSet<>(products.subList(0, i));
     }
     public Cart getCart() {
         return cart;
@@ -37,5 +37,12 @@ public class HomePage extends AbstractPage {
     public Cart clickOnOpenCartButton(){
         openCartButton.click();
         return cart;
+    }
+
+    private void waitProductList() {
+        FluentWait<List<HomeProduct>> waiter = new FluentWait<>(products)
+                .withTimeout(Duration.ofSeconds(5))
+                .pollingEvery(Duration.ofMillis(300));
+        waiter.until(products -> !products.isEmpty());
     }
 }
