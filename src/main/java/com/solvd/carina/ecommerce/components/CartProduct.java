@@ -10,10 +10,16 @@ public class CartProduct extends AbstractUIObject {
 
     @FindBy(xpath = ".//p")
     private ExtendedWebElement productName;
+
+    @FindBy(xpath = ".//p[text() = 'Quantity: ']")
+    private ExtendedWebElement productQuantityElement;
     public CartProduct(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
     }
     public String getProductName(){
         return productName.getText();
+    }
+    public String getProductQuantity(){
+        return productQuantityElement.getText();
     }
 }

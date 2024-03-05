@@ -57,6 +57,28 @@ public class WebTest implements IAbstractTest {
 
         //verify if all products are present in cart Component
         Assert.assertEquals(cartProductName, homeProductNames, "Products in cart do not match products added to cart");
-
     }
+
+    @Test
+    @MethodOwner(owner = "mchutt")
+    public void verifyAddTheSameProductTwiceTest(){
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+
+        //Add the same product twice into the cart
+        HomeProduct randomProduct = homePage.getRandomProduct();
+        Assert.assertNotNull(randomProduct, "Any product is present in the home page");
+
+        randomProduct.clickOnAddToCart();
+        homePage.getCart().clickOnCloseCartButton();
+        randomProduct.clickOnAddToCart();
+
+        //Verify quantity
+        List<CartProduct> allProducts = homePage.getCart().getAllProducts();
+        CartProduct cartProduct = allProducts.get(0);
+        Assert.assertNotNull(cartProduct, "Product is not present into the cart");
+        boolean endsWithTwo = cartProduct.getProductQuantity().endsWith("2");
+        Assert.assertTrue(endsWithTwo, "Product does not have two for quantity");
+    }
+
 }
