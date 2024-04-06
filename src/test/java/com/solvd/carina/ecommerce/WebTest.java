@@ -67,7 +67,7 @@ public class WebTest implements IAbstractTest {
 
         //Add the same product twice into the cart
         HomeProduct randomProduct = homePage.getRandomProduct();
-        Assert.assertNotNull(randomProduct, "Any product is present in the home page");
+        Assert.assertNotNull(randomProduct, "No product is present on the home page");
 
         randomProduct.clickOnAddToCart();
         homePage.getCart().clickOnCloseCartButton();
