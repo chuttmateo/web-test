@@ -2,12 +2,13 @@ package com.solvd.carina.luma;
 
 import com.solvd.carina.luma.components.CartComponent;
 import com.solvd.carina.luma.pages.LumaHomePage;
-import com.solvd.carina.luma.pages.ProductsDetailsPage;
-import com.solvd.carina.luma.pages.SearchPage;
+import com.solvd.carina.luma.pages.ProductDetailsPage;
+import com.solvd.carina.luma.pages.ProductsPage;
 import com.solvd.carina.luma.pages.SignInPage;
-import com.solvd.carina.luma.components.ProductsCard;
+import com.solvd.carina.luma.components.ProductCard;
 import com.zebrunner.carina.core.IAbstractTest;
 import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
+import org.apache.commons.collections.CollectionUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -21,13 +22,11 @@ public class WebLumaTest implements IAbstractTest {
     public void testSearchSomething(){
         LumaHomePage page = new LumaHomePage(getDriver());
         page.open();
-
-        boolean pageOpened = page.isPageOpened();
-        Assert.assertTrue(pageOpened, "Page is not opened");
+        Assert.assertTrue(page.isPageOpened(), "LumaHomePage is not opened!");
 
         page.getHeaderComponent().typeInSearchInput("books");
-        SearchPage searchPage = page.getHeaderComponent().pressEnterInSearchInput();
-        String se = searchPage.getTextSearched();
+        ProductsPage productsPage = page.getHeaderComponent().pressEnterInSearchInput();
+        String se = productsPage.getTextSearched();
 
         Assert.assertEquals(se, "Search results for: 'books'");
     }
@@ -37,22 +36,23 @@ public class WebLumaTest implements IAbstractTest {
     public void testFilterByPrice(){
         LumaHomePage page = new LumaHomePage(getDriver());
         page.open();
+        Assert.assertTrue(page.isPageOpened(), "LumaHomePage is not opened!");
 
         boolean pageOpened = page.isPageOpened();
         Assert.assertTrue(pageOpened, "Page is not opened");
 
-        SearchPage searchPage = page.getARandomOfferCard().clickOnLink();
-        searchPage.sortByPrice();
+        ProductsPage productsPage = page.getARandomOfferCard().clickOnLink();
+        productsPage.sortByPrice();
 
-        List<ProductsCard> products = searchPage.getProducts();
+        List<ProductCard> products = productsPage.getProducts();
 
 
         boolean isSorted = products.stream()
-                .map(ProductsCard::getPrice)
+                .map(ProductCard::getPrice)
                 .sorted()
                 .collect(Collectors.toList())
                 .equals(products.stream()
-                        .map(ProductsCard::getPrice)
+                        .map(ProductCard::getPrice)
                         .collect(Collectors.toList()));
 
         System.out.println(isSorted);
@@ -66,6 +66,7 @@ public class WebLumaTest implements IAbstractTest {
     public void testSingIn(){
         LumaHomePage page = new LumaHomePage(getDriver());
         page.open();
+        Assert.assertTrue(page.isPageOpened(), "LumaHomePage is not opened!");
 
         String pass = "Pepepepe12";
         String email = "pepepepe@pepe.com";
@@ -85,12 +86,13 @@ public class WebLumaTest implements IAbstractTest {
     public void testSortProductsByName(){
         LumaHomePage page = new LumaHomePage(getDriver());
         page.open();
+        Assert.assertTrue(page.isPageOpened(), "LumaHomePage is not opened!");
 
-        SearchPage searchPage = page.getARandomOfferCard().clickOnLink();
-        searchPage.sortByName();
+        ProductsPage productsPage = page.getARandomOfferCard().clickOnLink();
+        productsPage.sortByName();
 
-        List<String> productsName = searchPage.getProducts().stream()
-                .map(ProductsCard::getName)
+        List<String> productsName = productsPage.getProducts().stream()
+                .map(ProductCard::getName)
                 .collect(Collectors.toList());
 
         List<String> sortedByName = productsName.stream()
@@ -110,13 +112,13 @@ public class WebLumaTest implements IAbstractTest {
         LumaHomePage page = new LumaHomePage(getDriver());
         page.open();
 
-        SearchPage searchPage = page.getARandomOfferCard().clickOnLink();
-        ProductsCard randomProduct = searchPage.getARandomProduct();
+        ProductsPage productsPage = page.getARandomOfferCard().clickOnLink();
+        ProductCard randomProduct = productsPage.getARandomProduct();
         String productName = randomProduct.getName();
 
-        ProductsDetailsPage productsDetailsPage = randomProduct.clickOnDetails();
+        ProductDetailsPage productDetailsPage = randomProduct.clickOnDetails();
 
-        boolean equals = productName.equals(productsDetailsPage.getProductName());
+        boolean equals = productName.equals(productDetailsPage.getProductName());
 
         Assert.assertTrue(equals,"product name doesn't match with the expected one");
 
@@ -127,17 +129,26 @@ public class WebLumaTest implements IAbstractTest {
     public void addProductsToCartTest(){
         LumaHomePage page = new LumaHomePage(getDriver());
         page.open();
+        Assert.assertTrue(page.isPageOpened(), "LumaHomePage is not opened!");
 
-        SearchPage searchPage = page.getARandomOfferCard().clickOnLink();
-        ProductsCard productCard = searchPage.getProducts().get(0);
+        ProductsPage productsPage = page.getARandomOfferCard().clickOnLink();
+        List<ProductCard> products = productsPage.getProducts();
+        Assert.assertFalse(CollectionUtils.isEmpty(products), "Products not found!");
+
+        //Get a random product and open its details page
+        ProductCard productCard = products.get(0);
         String productName = productCard.getName();
-        ProductsDetailsPage productsDetailsPage = productCard.clickOnDetails();
+        ProductDetailsPage productDetailsPage = productCard.clickOnDetails();
+        //pause(3);
+        Assert.assertTrue(productDetailsPage.isPageOpened(), "Product details page is no opened!");
 
-        productsDetailsPage.clickOnARandomProductSize();
-        productsDetailsPage.clickOnARandomProductColor();
-        productsDetailsPage.clickOnAddToCartButton();
+        //Add product to the cart
+        productDetailsPage.clickOnARandomProductSize();
+        productDetailsPage.clickOnARandomProductColor();
+        productDetailsPage.clickOnAddToCartButton();
 
-        CartComponent cartComponent = productsDetailsPage.getHeaderComponent().clickOnOpenCartButton();
+        //Open cart and verify that the product was added correctly
+        CartComponent cartComponent = productDetailsPage.getHeaderComponent().clickOnOpenCartButton();
         String cartItemName = cartComponent.getItems().get(0).getItemName();
 
 

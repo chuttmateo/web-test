@@ -1,7 +1,7 @@
 package com.solvd.carina.luma.pages;
 
 import com.solvd.carina.luma.components.HeaderComponent;
-import com.solvd.carina.luma.components.ProductsCard;
+import com.solvd.carina.luma.components.ProductCard;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
@@ -10,20 +10,20 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 import java.util.Random;
 
-public class SearchPage extends AbstractPage {
+public class ProductsPage extends AbstractPage {
     @FindBy(css = ".page-header")
     private HeaderComponent headerComponent;
 
     @FindBy(css = ".base")
     private ExtendedWebElement textSearched;
-    //@FindBy(xpath = "//span[text()='Reviews']/ancestor::li")
+
     @FindBy(xpath = "//div[@class='product-item-info']")
-    private List<ProductsCard> products;
+    private List<ProductCard> products;
 
     @FindBy(css = "#sorter")
     private ExtendedWebElement sorterSelect;
 
-    public SearchPage(WebDriver driver) {
+    public ProductsPage(WebDriver driver) {
         super(driver);
     }
 
@@ -33,7 +33,7 @@ public class SearchPage extends AbstractPage {
     public HeaderComponent getHeaderComponent() {
         return headerComponent;
     }
-    public List<ProductsCard> getProducts(){
+    public List<ProductCard> getProducts(){
         return products;
     }
     public void sortByPrice(){
@@ -42,7 +42,7 @@ public class SearchPage extends AbstractPage {
     public void sortByName(){
         sorterSelect.select("Product Name");
     }
-    public ProductsCard getARandomProduct(){
+    public ProductCard getARandomProduct(){
         Random r = new Random();
         return products.get(r.nextInt(products.size()));
     }

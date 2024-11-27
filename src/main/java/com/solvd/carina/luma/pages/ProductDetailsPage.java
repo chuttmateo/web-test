@@ -2,6 +2,7 @@ package com.solvd.carina.luma.pages;
 
 import com.solvd.carina.luma.components.HeaderComponent;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.decorator.PageOpeningStrategy;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -9,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 import java.util.Random;
 
-public class ProductsDetailsPage extends AbstractPage {
+public class ProductDetailsPage extends AbstractPage {
 
     @FindBy(css = ".page-header")
     private HeaderComponent headerComponent;
@@ -25,8 +26,10 @@ public class ProductsDetailsPage extends AbstractPage {
     @FindBy(xpath = "//h1/span")
     private ExtendedWebElement productName;
 
-    public ProductsDetailsPage(WebDriver driver) {
+    public ProductDetailsPage(WebDriver driver) {
         super(driver);
+        setPageOpeningStrategy(PageOpeningStrategy.BY_ELEMENT);
+        setUiLoadedMarker(productName);
     }
 
     public String getProductName(){
@@ -34,6 +37,8 @@ public class ProductsDetailsPage extends AbstractPage {
     }
 
     public void clickOnAddToCartButton(){
+        addToCartBtn.scrollTo();
+        addToCartBtn.hover();
         addToCartBtn.click();
     }
 

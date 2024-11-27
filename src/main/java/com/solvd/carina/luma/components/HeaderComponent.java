@@ -1,6 +1,6 @@
 package com.solvd.carina.luma.components;
 
-import com.solvd.carina.luma.pages.SearchPage;
+import com.solvd.carina.luma.pages.ProductsPage;
 import com.solvd.carina.luma.pages.SignInPage;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
@@ -36,9 +36,9 @@ public class HeaderComponent extends AbstractUIObject {
         searchInput.type(text);
     }
 
-    public SearchPage pressEnterInSearchInput() {
+    public ProductsPage pressEnterInSearchInput() {
         searchInput.sendKeys(Keys.ENTER);
-        return new SearchPage(getDriver());
+        return new ProductsPage(getDriver());
     }
 
     public SignInPage clickOnSignInButton() {

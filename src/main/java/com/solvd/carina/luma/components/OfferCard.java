@@ -1,6 +1,6 @@
 package com.solvd.carina.luma.components;
 
-import com.solvd.carina.luma.pages.SearchPage;
+import com.solvd.carina.luma.pages.ProductsPage;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
 import org.openqa.selenium.SearchContext;
@@ -16,8 +16,10 @@ public class OfferCard extends AbstractUIObject {
         super(driver, searchContext);
     }
 
-    public SearchPage clickOnLink(){
-        offerLink.clickIfPresent();
-        return new SearchPage(getDriver());
+    public ProductsPage clickOnLink(){
+        offerLink.scrollTo();
+        offerLink.hover();
+        offerLink.click();
+        return new ProductsPage(driver);
     }
 }

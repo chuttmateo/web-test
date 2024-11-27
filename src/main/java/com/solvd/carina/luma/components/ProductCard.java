@@ -1,13 +1,13 @@
 package com.solvd.carina.luma.components;
 
-import com.solvd.carina.luma.pages.ProductsDetailsPage;
+import com.solvd.carina.luma.pages.ProductDetailsPage;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-public class ProductsCard extends AbstractUIObject {
+public class ProductCard extends AbstractUIObject {
 
     @FindBy(xpath = ".//span[@class='price']/parent::span")
     private ExtendedWebElement price;
@@ -18,12 +18,12 @@ public class ProductsCard extends AbstractUIObject {
     @FindBy(xpath = ".//button[@title='Add to Cart']")
     private ExtendedWebElement addToCartButton;
 
-    public ProductsCard(WebDriver driver, SearchContext searchContext) {
+    public ProductCard(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
     }
 
     public Double getPrice(){
-        String attribute = price.getAttribute("data-price-amount"); //getting value from an attribute to avoid the $ symbol
+        String attribute = price.getAttribute("data-price-amount"); //getting price value from an attribute to avoid the $ symbol
         return Double.valueOf(attribute);
     }
 
@@ -31,9 +31,11 @@ public class ProductsCard extends AbstractUIObject {
         return name.getText();
     }
 
-    public ProductsDetailsPage clickOnDetails(){
-        name.clickIfPresent();
-        return new ProductsDetailsPage(getDriver());
+    public ProductDetailsPage clickOnDetails(){
+        name.scrollTo();
+        name.hover();
+        name.click();
+        return new ProductDetailsPage(driver);
     }
     private void clickOnAddToCartBtn(){
         //TODO turn it as a public method and fix 'element click intercepted'
