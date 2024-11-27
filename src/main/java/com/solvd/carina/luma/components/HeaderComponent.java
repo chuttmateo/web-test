@@ -1,16 +1,12 @@
 package com.solvd.carina.luma.components;
 
-import com.google.common.base.Function;
 import com.solvd.carina.luma.pages.SearchPage;
 import com.solvd.carina.luma.pages.SignInPage;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-
-import java.time.Duration;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 public class HeaderComponent extends AbstractUIObject {
 
@@ -29,8 +25,8 @@ public class HeaderComponent extends AbstractUIObject {
     @FindBy(css = "#minicart-content-wrapper")
     private CartComponent cart;
 
-    /*@FindBy(css = ".counter-number")
-    private ExtendedWebElement itemCounter;*/
+    @FindBy(css = ".counter-number")
+    private ExtendedWebElement itemCounter;
 
     public HeaderComponent(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
@@ -55,7 +51,11 @@ public class HeaderComponent extends AbstractUIObject {
     }
 
     public CartComponent clickOnOpenCartButton() {
-        pause(2);
+        ExpectedCondition<Boolean> condition = (c) -> {
+            if (itemCounter.getText().isEmpty()) return false;
+            return !itemCounter.getText().equals("0"); //Wait until cart counter turns 1 or more
+        };
+        waitUntil(condition, 5);
         cartButton.click();
         return cart;
     }

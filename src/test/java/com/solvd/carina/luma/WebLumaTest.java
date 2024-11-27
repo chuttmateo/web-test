@@ -8,7 +8,6 @@ import com.solvd.carina.luma.pages.SignInPage;
 import com.solvd.carina.luma.components.ProductsCard;
 import com.zebrunner.carina.core.IAbstractTest;
 import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
