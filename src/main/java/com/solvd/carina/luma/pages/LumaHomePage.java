@@ -3,7 +3,6 @@ package com.solvd.carina.luma.pages;
 import com.solvd.carina.luma.components.HeaderComponent;
 import com.solvd.carina.luma.components.OfferCard;
 import com.zebrunner.carina.webdriver.gui.AbstractPage;
-import org.apache.commons.collections.CollectionUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 

@@ -16,7 +16,7 @@ public class HeaderComponent extends AbstractUIObject {
     @FindBy(id = "search")
     private ExtendedWebElement searchInput;
 
-    @FindBy(xpath = "//li/a")
+    @FindBy(xpath = ".//li[@class='authorization-link']/a")
     private ExtendedWebElement signInButton;
 
     @FindBy(css = ".logged-in")
@@ -42,7 +42,9 @@ public class HeaderComponent extends AbstractUIObject {
     }
 
     public SignInPage clickOnSignInButton() {
-        signInButton.click();
+        signInButton.scrollTo();
+        signInButton.hover();
+        signInButton.clickByJs();
         return new SignInPage(getDriver());
     }
 

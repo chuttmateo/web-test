@@ -17,6 +17,7 @@ public class ProductDetailsPage extends AbstractPage {
 
     @FindBy(xpath = "//div[@attribute-code='size']/div/div")
     private List<ExtendedWebElement> productSizeList;
+
     @FindBy(xpath = "//div[@attribute-code='color']/div/div")
     private List<ExtendedWebElement> productColorList;
 
@@ -26,28 +27,32 @@ public class ProductDetailsPage extends AbstractPage {
     @FindBy(xpath = "//h1/span")
     private ExtendedWebElement productName;
 
+    @FindBy(xpath = "//div[@class='product-info-main']//a[@data-action='add-to-wishlist']")
+    private ExtendedWebElement addToWishListBtn;
+
     public ProductDetailsPage(WebDriver driver) {
         super(driver);
         setPageOpeningStrategy(PageOpeningStrategy.BY_ELEMENT);
         setUiLoadedMarker(productName);
     }
 
-    public String getProductName(){
+    public String getProductName() {
         return productName.getText();
     }
 
-    public void clickOnAddToCartButton(){
+    public void clickOnAddToCartButton() {
         addToCartBtn.scrollTo();
         addToCartBtn.hover();
         addToCartBtn.click();
     }
 
-    public void clickOnARandomProductSize(){
+    public void clickOnARandomProductSize() {
         Random r = new Random();
         ExtendedWebElement extendedWebElement = productSizeList.get(r.nextInt(productSizeList.size()));
         extendedWebElement.click();
     }
-    public void clickOnARandomProductColor(){
+
+    public void clickOnARandomProductColor() {
         Random r = new Random();
         ExtendedWebElement extendedWebElement = productColorList.get(r.nextInt(productColorList.size()));
         extendedWebElement.click();
@@ -55,5 +60,12 @@ public class ProductDetailsPage extends AbstractPage {
 
     public HeaderComponent getHeaderComponent() {
         return headerComponent;
+    }
+
+    public CustomerPage clickOnAddToWishListButton(){
+        addToWishListBtn.scrollTo();
+        addToWishListBtn.hover();
+        addToWishListBtn.click();
+        return new CustomerPage(driver);
     }
 }

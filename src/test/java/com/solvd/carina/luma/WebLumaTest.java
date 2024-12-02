@@ -1,10 +1,8 @@
 package com.solvd.carina.luma;
 
 import com.solvd.carina.luma.components.CartComponent;
-import com.solvd.carina.luma.pages.LumaHomePage;
-import com.solvd.carina.luma.pages.ProductDetailsPage;
-import com.solvd.carina.luma.pages.ProductsPage;
-import com.solvd.carina.luma.pages.SignInPage;
+import com.solvd.carina.luma.components.WishListProductCard;
+import com.solvd.carina.luma.pages.*;
 import com.solvd.carina.luma.components.ProductCard;
 import com.zebrunner.carina.core.IAbstractTest;
 import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
@@ -13,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class WebLumaTest implements IAbstractTest {
@@ -153,6 +152,36 @@ public class WebLumaTest implements IAbstractTest {
 
 
         Assert.assertEquals(cartItemName, productName, "The product added to the cart doesn't appears, or the one that appears doesn't match with the expected one");
+    }
+
+    @Test
+    @MethodOwner(owner = "mchutt")
+    public void testAddProductToWishList(){
+        LumaHomePage page = new LumaHomePage(getDriver());
+        page.open();
+        Assert.assertTrue(page.isPageOpened(), "LumaHomePage is not opened!");
+
+        String pass = "Pepepepe12";
+        String email = "pepepepe@pepe.com";
+
+        SignInPage signInPage = page.getHeaderComponent().clickOnSignInButton();
+        signInPage.typeEmail(email);
+        signInPage.typePass(pass);
+        signInPage.clickOnSignInButton();
+
+        String productName = "Hero Hoodie";
+        page.getHeaderComponent().typeInSearchInput(productName);
+        ProductsPage productsPage = page.getHeaderComponent().pressEnterInSearchInput();
+
+        ProductDetailsPage productDetailsPage = productsPage.getProducts().get(0).clickOnDetails();
+        CustomerPage customerPage = productDetailsPage.clickOnAddToWishListButton();
+
+        Optional<WishListProductCard> product = customerPage.getWishListProducts().stream()
+                .filter(p -> p.getProductName().equals(productName))
+                .findFirst();
+
+        Assert.assertTrue(product.isPresent(), "Product is not present in the wish list");
+
     }
 
 }
