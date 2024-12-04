@@ -173,6 +173,7 @@ public class WebLumaTest implements IAbstractTest {
         page.getHeaderComponent().typeInSearchInput(productName);
         ProductsPage productsPage = page.getHeaderComponent().pressEnterInSearchInput();
 
+        //Add product to wish list
         ProductDetailsPage productDetailsPage = productsPage.getProducts().get(0).clickOnDetails();
         CustomerPage customerPage = productDetailsPage.clickOnAddToWishListButton();
 
@@ -182,6 +183,11 @@ public class WebLumaTest implements IAbstractTest {
 
         Assert.assertTrue(product.isPresent(), "Product is not present in the wish list");
 
+        //remove product from wish list
+        product.get().clickOnRemoveButton();
+        String productRemovedMessage = customerPage.getProductRemovedMessage();
+
+        Assert.assertEquals(productRemovedMessage, productName + " has been removed from your Wish List.", "Product removed and alert message do not match");
     }
 
 }
